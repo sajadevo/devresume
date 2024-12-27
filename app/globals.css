@@ -1,0 +1,120 @@
+@import "tailwindcss";
+@plugin "tailwindcss-animate";
+
+@theme {
+  --color-black: #020617;
+  --color-background: #f8fafc;
+  --color-foreground: #1e293b;
+  --color-card: #fff;
+  --color-card-foreground: #0a0a0a;
+  --color-popover: #fff;
+  --color-popover-foreground: #0a0a0a;
+  --color-primary: #2563eb;
+  --color-primary-dark: #1d4ed8;
+  --color-primary-foreground: #fff;
+  --color-secondary: #f5f5f5;
+  --color-secondary-foreground: #171717;
+  --color-muted: #f5f5f5;
+  --color-muted-foreground: #737373;
+  --color-accent: #f5f5f5;
+  --color-accent-foreground: #171717;
+  --color-destructive: #ef4444;
+  --color-destructive-foreground: #fafafa;
+  --color-border: #e2e8f0;
+  --color-input: #e2e8f0;
+  --color-ring: #2563eb;
+  --chart-1: 161.4 93.5% 30.4%;
+  --chart-2: 221.2 83.2% 53.3%;
+  --chart-3: 27 96% 61%;
+  --chart-4: 243.4 75.4% 58.6%;
+  --chart-5: 222.2 84% 4.9%;
+  --color-sidebar-background: #fafafa;
+  --color-sidebar-foreground: #3f3f46;
+  --color-sidebar-primary: #18181b;
+  --color-sidebar-primary-foreground: #fafafa;
+  --color-sidebar-accent: #f4f4f5;
+  --color-sidebar-accent-foreground: #18181b;
+  --color-sidebar-border: #e5e7eb;
+  --color-sidebar-ring: #3b82f6;
+  --color-github: #1f2329;
+  --color-linkedin: #0b66c2;
+  --color-linkedin-dark: #0a509a;
+  --radius: 0.5rem;
+  --radius-lg: var(--radius);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-sm: calc(var(--radius) - 4px);
+
+  /* animations */
+  --animate-slideDown: accordion-down 0.2s ease-out;
+  --animate-slideUp: accordion-up 0.2s ease-out;
+
+  /* @shadows */
+  --inset-shadow-2xs: inset 0 0.5px 1px rgb(0 0 0 / 0.05);
+
+  @keyframes accordion-down {
+    from {
+      height: 0px;
+    }
+    to {
+      height: var(--radix-accordion-content-height);
+    }
+  }
+
+  @keyframes accordion-up {
+    from {
+      height: var(--radix-accordion-content-height);
+    }
+    to {
+      height: 0px;
+    }
+  }
+}
+
+/* dark mode */
+@variant dark (&:where(.dark, .dark *));
+
+.dark {
+  --color-background: #0a0a0a;
+  --color-foreground: #fafafa;
+  --color-card: #0a0a0a;
+  --color-card-foreground: #fafafa;
+  --color-popover: #0a0a0a;
+  --color-popover-foreground: #fafafa;
+  --color-primary: #fafafa;
+  --color-primary-foreground: #171717;
+  --color-secondary: #262626;
+  --color-secondary-foreground: #fafafa;
+  --color-muted: #e2e8f0;
+  --color-muted-foreground: #a3a3a3;
+  --color-accent: #262626;
+  --color-accent-foreground: #fafafa;
+  --color-destructive: #7f1d1d;
+  --color-destructive-foreground: #fafafa;
+  --color-border: #262626;
+  --color-input: #262626;
+  --color-ring: #d4d4d4;
+  --chart-1: 220 70% 50%;
+  --chart-2: 160 60% 45%;
+  --chart-3: 30 80% 55%;
+  --chart-4: 280 65% 60%;
+  --chart-5: 340 75% 55%;
+  --color-sidebar-background: #18181b;
+  --color-sidebar-foreground: #f4f4f5;
+  --color-sidebar-primary: #1d4ed8;
+  --color-sidebar-primary-foreground: #fff;
+  --color-sidebar-accent: #27272a;
+  --color-sidebar-accent-foreground: #f4f4f5;
+  --color-sidebar-border: #27272a;
+  --color-sidebar-ring: #3b82f6;
+}
+
+* {
+  @apply border-border;
+}
+body {
+  @apply bg-background text-foreground;
+}
+
+::selection {
+  @apply bg-primary text-primary-foreground;
+}
