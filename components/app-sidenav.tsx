@@ -10,9 +10,16 @@ import { RiUserSmileFill } from "@remixicon/react";
 // @utils
 import { auth } from "@/auth";
 
+// @actions
+import { getProfileBasicInfo } from "@/lib/actions";
+
 export async function AppSidenav() {
   const session = await auth();
   const isAuthenticated = Boolean(session?.user);
+
+  const profile = isAuthenticated
+    ? await getProfileBasicInfo(session?.user.login!)
+    : null;
 
   return (
     <div className="p-6 h-max lg:h-screen lg:sticky top-0 flex flex-col justify-between">
@@ -42,8 +49,8 @@ export async function AppSidenav() {
         {isAuthenticated ? (
           <div className="mb-8">
             <Avatar className="size-12 mb-3">
-              <AvatarImage src={session?.user.avatar_url} />
-              <AvatarFallback>{session?.user.name?.slice(0, 1)}</AvatarFallback>
+              <AvatarImage src={profile?.avatar} />
+              <AvatarFallback>{profile?.name?.slice(0, 1)}</AvatarFallback>
             </Avatar>
             <div className="text-black text-3xl font-semibold tracking-tight mb-2">
               Welcome 👋🏻

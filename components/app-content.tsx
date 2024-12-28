@@ -11,14 +11,13 @@ import { RiArrowRightUpFill, RiArticleFill } from "@remixicon/react";
 import { auth } from "@/auth";
 
 // @actions
-import {
-  getUserIssues,
-  getUserCommits,
-  getUserLanguages,
-  getUserCoreReview,
-  getUserPinnedRepos,
-  getUserPullRequests,
-} from "@/lib/actions";
+import { getProfile } from "@/lib/actions";
+
+// @schemas
+import { profile as profileSchema } from "@/lib/schema";
+
+// @types
+import type { InferSelectModel } from "drizzle-orm";
 
 export async function AppContent() {
   const session = await auth();
@@ -39,101 +38,93 @@ export async function AppContent() {
     );
   }
 
-  const email = session.user.email;
-  const website = session.user.blog;
   const username = session.user.login;
-  const location = session.user.location;
-  const twitter = session.user.twitter_username;
 
-  // time range for the user
-  const createdAt = new Date(session.user.created_at);
-  const updatedAt = new Date(session.user.updated_at);
+  const profile: InferSelectModel<typeof profileSchema> = await getProfile(
+    username
+  );
 
-  const dateRange = `${createdAt.toLocaleString("en-US", {
+  const createdAt = new Date(profile.createdAt as string);
+  const updatedAt = new Date(profile.updatedAt as string);
+
+  const dateRange = `${createdAt?.toLocaleString("en-US", {
     year: "numeric",
     month: "short",
-  })} - ${updatedAt.toLocaleString("en-US", {
+  })} - ${updatedAt?.toLocaleString("en-US", {
     year: "numeric",
     month: "short",
   })}`;
 
-  // commits, prs, issues and code reviews data fetch in parallel
-  const promises = await Promise.all([
-    await getUserCommits(username),
-    await getUserPullRequests(username),
-    await getUserIssues(username),
-    await getUserCoreReview(username),
-  ]);
+  const ghOverview = JSON.parse(profile.ghOverview as string);
 
   const data = [
     {
       name: "commit",
-      value: promises[0],
       fill: "var(--color-commit)",
+      value: Number(ghOverview.commits),
     },
     {
       name: "pr",
-      value: promises[1],
       fill: "var(--color-pr)",
+      value: Number(ghOverview.pullRequests),
     },
     {
       name: "issue",
-      value: promises[2],
       fill: "var(--color-issue)",
+      value: Number(ghOverview.issues),
     },
     {
       name: "code-review",
-      value: promises[3],
       fill: "var(--color-code-review)",
+      value: Number(ghOverview.codeReviews),
     },
     {
       name: "repo",
-      value:
-        session.user.public_repos + (session.user.total_private_repos || 0),
       fill: "var(--color-repo)",
+      value: Number(ghOverview.repositories),
     },
   ].filter((item) => item.value !== 0);
 
-  const projects = await getUserPinnedRepos(username);
-  const languages = await getUserLanguages(username);
+  const projects = JSON.parse(profile.projects as unknown as string);
+  const languages = JSON.parse(profile.languages as string);
 
   return (
     <div className="col-span-full lg:col-span-3 p-2">
       <div className="w-full h-full lg:h-[calc(100vh-16px)] lg:overflow-scroll bg-white border border-border rounded-3xl px-6 py-6 md:px-10 md:py-8">
         <div className="flex items-center justify-between gap-4 md:gap-6 flex-wrap">
           <Avatar className="size-12">
-            <AvatarImage src={session.user.avatar_url} />
-            <AvatarFallback>{session.user.name?.slice(0, 1)}</AvatarFallback>
+            <AvatarImage src={profile.avatar!} />
+            <AvatarFallback>{profile.name?.slice(0, 1)}</AvatarFallback>
           </Avatar>
           <div className="flex items-start flex-wrap gap-y-4 gap-x-12">
             <div className="text-foreground">
-              {location && <p>{location}</p>}
-              {email && (
+              {profile.location && <p>{profile.location}</p>}
+              {profile.email && (
                 <Link
-                  href={`mailto:${email}`}
+                  href={`mailto:${profile.email}`}
                   className="hover:text-primary transition-colors duration-300"
                 >
-                  {email}
+                  {profile.email}
                 </Link>
               )}
             </div>
             <div className="text-foreground">
-              {website && (
+              {profile.portfolio && (
                 <Link
                   target="_blank"
-                  href={website as string}
+                  href={profile.portfolio as string}
                   className="block hover:text-primary transition-colors duration-300"
                 >
-                  {website}
+                  {profile.portfolio}
                 </Link>
               )}
-              {twitter && (
+              {profile.x && (
                 <Link
                   target="_blank"
-                  href={`https://x.com/${twitter}`}
+                  href={`https://x.com/${profile.x}`}
                   className="block hover:text-primary transition-colors duration-300"
                 >
-                  https://x.com/{twitter}
+                  https://x.com/{profile.x}
                 </Link>
               )}
             </div>
@@ -141,16 +132,16 @@ export async function AppContent() {
         </div>
         <div className="my-6">
           <h1 className="text-2xl md:text-3xl font-semibold text-black mb-2">
-            {session.user.name}
+            {profile.name}
           </h1>
           <p className="text-foreground text-base md:text-lg max-w-xl text-balance">
-            {session.user.bio}
+            {profile.bio}
           </p>
           <div className="flex items-center gap-2 mt-4">
             <p className="text-foreground">
               Followed by{" "}
               <span className="text-black font-medium">
-                {session.user.followers}
+                {profile.followers}
               </span>{" "}
               devs
             </p>
@@ -158,7 +149,7 @@ export async function AppContent() {
             <p className="text-foreground">
               Following{" "}
               <span className="text-black font-medium">
-                {session.user.following}
+                {profile.following}
               </span>{" "}
               devs
             </p>
@@ -170,37 +161,51 @@ export async function AppContent() {
             My Top Projects
           </h3>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {projects?.map(({ url, name, stargazerCount, languages }, key) => (
-              <div
-                key={key}
-                className="border border-border rounded-2xl py-5 px-6 capitalize"
-              >
-                <Link
-                  href={url}
-                  target="_blank"
-                  className="text-lg flex items-center gap-2 font-semibold text-black hover:text-primary transition-colors duration-300 mb-2"
+            {projects?.map(
+              (
+                {
+                  url,
+                  name,
+                  stars,
+                  languages,
+                }: {
+                  url: string;
+                  name: string;
+                  stars: number;
+                  languages: string[];
+                },
+                key: number
+              ) => (
+                <div
+                  key={key}
+                  className="border border-border rounded-2xl py-5 px-6 capitalize"
                 >
-                  <span className="block truncate">
-                    {name.replaceAll("-", " ").replaceAll("_", " ")}
-                  </span>
-                  <RiArrowRightUpFill className="size-6" />
-                </Link>
-                <div className="flex flex-wrap items-center gap-2">
-                  <span className="text-foreground text-sm">
-                    {new Intl.NumberFormat("en-US").format(stargazerCount)}{" "}
-                    Stars
-                  </span>
-                  {languages.length > 0 && (
-                    <>
-                      <span>⋅</span>
-                      <span className="text-foreground text-sm">
-                        {languages.join(", ")}
-                      </span>
-                    </>
-                  )}
+                  <Link
+                    href={url}
+                    target="_blank"
+                    className="text-lg flex items-center gap-2 font-semibold text-black hover:text-primary transition-colors duration-300 mb-2"
+                  >
+                    <span className="block truncate">
+                      {name.replaceAll("-", " ").replaceAll("_", " ")}
+                    </span>
+                    <RiArrowRightUpFill className="size-6" />
+                  </Link>
+                  <div className="flex flex-wrap items-center gap-2">
+                    <span className="text-foreground text-sm">
+                      {new Intl.NumberFormat("en-US").format(stars)} Stars
+                    </span>
+                    {languages.length > 0 && (
+                      <>
+                        <span>⋅</span>
+                        <span className="text-foreground text-sm">
+                          {languages.join(", ")}
+                        </span>
+                      </>
+                    )}
+                  </div>
                 </div>
-              </div>
-            ))}
+              )
+            )}
           </div>
         </div>
         <div className="mt-12">
@@ -208,7 +213,7 @@ export async function AppContent() {
             Languages of Choice
           </h3>
           <div className="flex items-center gap-4 flex-wrap">
-            {languages?.map((language, key) => {
+            {languages?.map((language: string, key: number) => {
               const filteredLanguages = ["Vue", "SCSS", "HTML"];
               const filteredLanguagesReplace: { [key: string]: string } = {
                 Vue: "vuedotjs",

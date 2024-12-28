@@ -1,5 +1,12 @@
 // @utils
-import { pgTable, serial, text, date, json } from "drizzle-orm/pg-core";
+import {
+  pgTable,
+  serial,
+  text,
+  date,
+  json,
+  integer,
+} from "drizzle-orm/pg-core";
 
 // profile schema
 export const profile = pgTable("profiles", {
@@ -14,8 +21,8 @@ export const profile = pgTable("profiles", {
   email: text("email").unique(),
   x: text("x"),
   portfolio: text("portfolio"),
-  followers: text("followers"),
-  following: text("following"),
+  followers: integer("followers"),
+  following: integer("following"),
   ghOverview: json("ghOverview").default({
     commits: 0,
     pullRequests: 0,
