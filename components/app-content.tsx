@@ -12,11 +12,11 @@ import { auth } from "@/auth";
 
 // @actions
 import {
-  getUserRepos,
   getUserIssues,
   getUserCommits,
   getUserLanguages,
   getUserCoreReview,
+  getUserPinnedRepos,
   getUserPullRequests,
 } from "@/lib/actions";
 
@@ -92,14 +92,14 @@ export async function AppContent() {
         session.user.public_repos + (session.user.total_private_repos || 0),
       fill: "var(--color-repo)",
     },
-  ];
+  ].filter((item) => item.value !== 0);
 
-  const projects = await getUserRepos(username);
+  const projects = await getUserPinnedRepos(username);
   const languages = await getUserLanguages(username);
 
   return (
     <div className="col-span-full lg:col-span-3 p-2">
-      <div className="size-full bg-white border border-border rounded-3xl px-6 py-6 md:px-10 md:py-8">
+      <div className="w-full h-full lg:h-[calc(100vh-16px)] lg:overflow-scroll bg-white border border-border rounded-3xl px-6 py-6 md:px-10 md:py-8">
         <div className="flex items-center justify-between gap-4 md:gap-6 flex-wrap">
           <Avatar className="size-12">
             <AvatarImage src={session.user.avatar_url} />
@@ -170,37 +170,34 @@ export async function AppContent() {
             My Top Projects
           </h3>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {projects?.map((project, key) => (
+            {projects?.map(({ url, name, stargazerCount, languages }, key) => (
               <div
                 key={key}
                 className="border border-border rounded-2xl py-5 px-6 capitalize"
               >
                 <Link
-                  href={project?.url}
+                  href={url}
                   target="_blank"
                   className="text-lg flex items-center gap-2 font-semibold text-black hover:text-primary transition-colors duration-300 mb-2"
                 >
                   <span className="block truncate">
-                    {project?.name.replaceAll("-", " ").replaceAll("_", " ")}
+                    {name.replaceAll("-", " ").replaceAll("_", " ")}
                   </span>
                   <RiArrowRightUpFill className="size-6" />
                 </Link>
                 <div className="flex flex-wrap items-center gap-2">
                   <span className="text-foreground text-sm">
-                    {new Intl.NumberFormat("en-US").format(project?.stars)}{" "}
+                    {new Intl.NumberFormat("en-US").format(stargazerCount)}{" "}
                     Stars
                   </span>
-                  <span>⋅</span>
-                  <span className="text-foreground text-sm">
-                    {new Intl.NumberFormat("en-US").format(
-                      project?.commits || 0
-                    )}{" "}
-                    Commits
-                  </span>
-                  <span>⋅</span>
-                  <span className="text-foreground text-sm">
-                    {project?.language}
-                  </span>
+                  {languages.length > 0 && (
+                    <>
+                      <span>⋅</span>
+                      <span className="text-foreground text-sm">
+                        {languages.join(", ")}
+                      </span>
+                    </>
+                  )}
                 </div>
               </div>
             ))}
@@ -211,18 +208,34 @@ export async function AppContent() {
             Languages of Choice
           </h3>
           <div className="flex items-center gap-4 flex-wrap">
-            {languages?.map((language, key) => (
-              <div key={key} className="flex items-center gap-2">
-                <Image
-                  alt={language}
-                  width={20}
-                  height={20}
-                  className="rounded-xs"
-                  src={`https://cdn.jsdelivr.net/npm/programming-languages-logos/src/${language.toLowerCase()}/${language.toLowerCase()}.png`}
-                />
-                <span className="text-foreground text-sm mr-2">{language}</span>
-              </div>
-            ))}
+            {languages?.map((language, key) => {
+              const filteredLanguages = ["Vue", "SCSS", "HTML"];
+              const filteredLanguagesReplace: { [key: string]: string } = {
+                Vue: "vuedotjs",
+                SCSS: "sass",
+                HTML: "html5",
+              };
+              const languageName = filteredLanguages.includes(language)
+                ? filteredLanguagesReplace[
+                    language as keyof typeof filteredLanguagesReplace
+                  ]
+                : language.toLowerCase();
+
+              return (
+                <div key={key} className="flex items-center gap-2">
+                  <Image
+                    alt={language}
+                    width={20}
+                    height={20}
+                    className="rounded-xs"
+                    src={`https://cdn.jsdelivr.net/npm/simple-icons/icons/${languageName}.svg`}
+                  />
+                  <span className="text-foreground text-sm mr-2">
+                    {language}
+                  </span>
+                </div>
+              );
+            })}
           </div>
         </div>
       </div>

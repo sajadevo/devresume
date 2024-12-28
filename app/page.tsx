@@ -4,7 +4,7 @@ import { AppContent } from "@/components/app-content";
 
 export default async function Page() {
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-4">
+    <div className="grid grid-cols-1 lg:grid-cols-4 lg:overflow-hidden">
       <AppSidenav />
       <AppContent />
     </div>
