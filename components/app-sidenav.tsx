@@ -77,16 +77,16 @@ export async function AppSidenav() {
           </div>
         )}
       </div>
-      <p className="text-sm text-foreground hidden lg:block">
-        Built with ❤️ by{" "}
+      <div className="flex items-center gap-2">
+        <p className="text-sm text-foreground">&copy; 2024</p>
+        <span className="text-foreground leading-none">⋅</span>
         <Link
-          target="_blank"
-          href="https://x.com/sajadevo_"
-          className="hover:text-primary leading-none transition-colors duration-300"
+          href="/privacy-policy"
+          className="text-sm text-foreground hover:text-primary transition-colors duration-300"
         >
-          Sajad
+          Privacy Policy
         </Link>
-      </p>
+      </div>
     </div>
   );
 }
