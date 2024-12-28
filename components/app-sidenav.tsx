@@ -2,6 +2,7 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { GithubAuth } from "@/components/github-auth";
+import { DeleteButton } from "@/components/delete-button";
 import { CopyLinkButton } from "@/components/copy-link-button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
@@ -23,7 +24,7 @@ export async function AppSidenav() {
     : null;
 
   return (
-    <div className="p-6 h-max lg:h-screen lg:sticky top-0 flex flex-col justify-between">
+    <div className="p-6 h-max lg:h-screen sticky top-0 flex flex-col justify-between">
       <div className="flex items-center gap-3">
         <Button size="icon" className="size-8 grid place-items-center" asChild>
           <div>
@@ -46,7 +47,7 @@ export async function AppSidenav() {
           </p>
         </div>
       </div>
-      <div className="pt-12 pb-0 lg:pb-6 lg:pt-6 max-w-sm">
+      <div className="py-12 lg:py-6 max-w-sm">
         {isAuthenticated ? (
           <div className="mb-8">
             <Avatar className="size-12 mb-3">
@@ -72,9 +73,17 @@ export async function AppSidenav() {
         )}
         <GithubAuth isAuthenticated={isAuthenticated} />
         {isAuthenticated && (
-          <div className="mt-4">
-            <CopyLinkButton username={session?.user.login!} />
-          </div>
+          <>
+            <div className="mt-4">
+              <CopyLinkButton username={session?.user.login!} />
+            </div>
+            <div className="flex items-center justify-center text-foreground/50 pointer-events-none select-none gap-2 my-4">
+              <span>⋅</span>
+              <span>⋅</span>
+              <span>⋅</span>
+            </div>
+            <DeleteButton username={session?.user.login!} />
+          </>
         )}
       </div>
       <div className="flex items-center gap-2">

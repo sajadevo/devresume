@@ -16,7 +16,7 @@ const buttonVariants = cva(
         linkedin:
           "bg-linkedin text-white ring ring-linkedin-dark inset-shadow-2xs inset-shadow-white/20 hover:brightness-110 hover:saturate-110 active:brightness-100 active:saturate-100",
         destructive:
-          "bg-destructive text-destructive-foreground shadow-sm hover:bg-destructive/90",
+          "bg-gradient-to-t from-destructive to-destructive-dark text-destructive-foreground ring ring-destructive-dark inset-shadow-2xs inset-shadow-white/20 hover:brightness-110 hover:saturate-110 active:brightness-100 active:saturate-100",
         outline:
           "border border-input bg-background shadow-sm hover:bg-accent hover:text-accent-foreground",
         secondary: "bg-white text-black ring ring-border [text-shadow:none]",

@@ -17,6 +17,21 @@ import type { InferInsertModel } from "drizzle-orm";
 const endpoint = "https://api.github.com";
 const githubAccessToken = process.env.GITHUB_ACCESS_TOKEN;
 
+export async function deleteProfile(username: string) {
+  const supabase = await createClient();
+
+  const { error } = await supabase
+    .from("profiles")
+    .delete()
+    .eq("username", username);
+
+  if (error) {
+    throw new Error(error.message);
+  }
+
+  await signOut();
+}
+
 export async function getProfileBasicInfo(username: string) {
   const supabase = await createClient();
 
