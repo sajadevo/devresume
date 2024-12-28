@@ -2,6 +2,7 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { GithubAuth } from "@/components/github-auth";
+import { CopyLinkButton } from "@/components/copy-link-button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 // @icons
@@ -70,12 +71,11 @@ export async function AppSidenav() {
           </h2>
         )}
         <GithubAuth isAuthenticated={isAuthenticated} />
-        {/* <div className="mt-4">
-          <Button variant="linkedin" className="w-full cursor-pointer">
-            <RiLinkedinBoxFill className="size-5" />
-            Connect with LinkedIn
-          </Button>
-        </div> */}
+        {isAuthenticated && (
+          <div className="mt-4">
+            <CopyLinkButton username={session?.user.login!} />
+          </div>
+        )}
       </div>
       <p className="text-sm text-foreground hidden lg:block">
         Built with ❤️ by{" "}
