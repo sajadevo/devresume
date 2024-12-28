@@ -5,10 +5,7 @@ import { AnalyticsChart } from "@/components/analytics-chart";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 // @icons
-import { RiArrowRightUpFill, RiArticleFill } from "@remixicon/react";
-
-// @utils
-import { auth } from "@/auth";
+import { RiArrowRightUpFill } from "@remixicon/react";
 
 // @actions
 import { getProfile } from "@/lib/actions";
@@ -19,26 +16,12 @@ import { profile as profileSchema } from "@/lib/schema";
 // @types
 import type { InferSelectModel } from "drizzle-orm";
 
-export async function AppContent() {
-  const session = await auth();
-
-  if (!session) {
-    return (
-      <div className="col-span-full lg:col-span-3 p-2">
-        <div className="size-full bg-white border border-border text-center rounded-3xl px-6 py-6 md:px-10 md:py-8 grid place-items-center">
-          <div className="max-w-lg mx-auto opacity-50">
-            <RiArticleFill className="size-24 text-black mx-auto" />
-            <p className="text-foreground text-base md:text-lg max-w-xl mt-8 text-balance">
-              You need to sign in with your GitHub & LinkedIn accounts to see
-              your DevResume.
-            </p>
-          </div>
-        </div>
-      </div>
-    );
-  }
-
-  const username = session.user.login;
+export default async function Page({
+  params,
+}: {
+  params: Promise<{ username: string }>;
+}) {
+  const username = (await params).username;
 
   const profile: InferSelectModel<typeof profileSchema> = await getProfile(
     username

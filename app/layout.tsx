@@ -1,3 +1,6 @@
+// @components
+import { AppSidenav } from "@/components/app-sidenav";
+
 // @utils
 import { generateMetadata } from "@/lib/utils";
 
@@ -22,7 +25,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${geistSans.variable} antialiased`}>{children}</body>
+      <body className={`${geistSans.variable} antialiased`}>
+        <div className="grid grid-cols-1 lg:grid-cols-4 lg:overflow-hidden">
+          <AppSidenav />
+          {children}
+        </div>
+      </body>
     </html>
   );
 }

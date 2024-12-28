@@ -66,7 +66,7 @@ export async function AppSidenav() {
           </div>
         ) : (
           <h2 className="text-black text-3xl font-semibold tracking-tight mb-8">
-            Generate resume from your Github & LinkedIn profiles 🚀
+            Generate resume based on your Github profile 🚀
           </h2>
         )}
         <GithubAuth isAuthenticated={isAuthenticated} />
