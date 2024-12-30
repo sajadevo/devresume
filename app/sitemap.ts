@@ -6,7 +6,7 @@ const domain = isProd
   ? process.env.NEXT_PUBLIC_PROD_URL!
   : process.env.NEXT_PUBLIC_DEV_URL!;
 
-const routes = [""];
+const routes = ["", "privacy-policy"];
 
 export default function sitemap(): MetadataRoute.Sitemap {
   return routes.map((route) => ({
