@@ -1,143 +1,59 @@
-# Shadcn/ui + TailwindCSS v4
+<a href="https://www.devresume.xyz">
+  <img alt="DevResume generates beautiful resume based on your GitHub profile data." src="https://www.devresume.xyz/demo.png">
+</a>
 
-## Installation
+<h3 align="center">DevResume</h3>
 
-1. Install the new version of TailwindCSS and the PostCSS plugin:
+<p align="center">
+    Generate a beautiful resume based on your GitHub profile data.
+    <br />
+    <a href="https://www.devresume.xyz"><strong>Get Started</strong></a>
+    <br />
+    <br />
+    <a href="#introduction"><strong>Introduction</strong></a> ·
+    <a href="#tech-stack"><strong>Tech Stack</strong></a> ·
+    <a href="#contributing"><strong>Contributing</strong></a>
+</p>
 
-```bash
-npm install tailwindcss@next @tailwindcss/postcss@next
-```
+<p align="center">
+  <a href="https://github.com/sajadevo/devresume/blob/main/LICENSE">
+    <img src="https://img.shields.io/github/license/sajadevo/devresume?label=license&logo=github&color=f80&logoColor=fff" alt="License" />
+  </a>
+</p>
 
----
+<br/>
 
-2. Update your stylesheet and replace it with the code below:
+## Introduction
 
-```css
-@import "tailwindcss";
-@plugin "tailwindcss-animate";
+DevResume is a free and open-source tool that generates beautiful resume based on your GitHub profile data. It's a great way to showcase your skills, projects, and contributions in a visually appealing way.
 
-@theme {
-  --color-background: #fff;
-  --color-foreground: #0a0a0a;
-  --color-card: #fff;
-  --color-card-foreground: #0a0a0a;
-  --color-popover: #fff;
-  --color-popover-foreground: #0a0a0a;
-  --color-primary: #171717;
-  --color-primary-foreground: #fafafa;
-  --color-secondary: #f5f5f5;
-  --color-secondary-foreground: #171717;
-  --color-muted: #f5f5f5;
-  --color-muted-foreground: #737373;
-  --color-accent: #f5f5f5;
-  --color-accent-foreground: #171717;
-  --color-destructive: #ef4444;
-  --color-destructive-foreground: #fafafa;
-  --color-border: #e5e5e5;
-  --color-input: #e5e5e5;
-  --color-ring: #0a0a0a;
-  --chart-1: 12 76% 61%;
-  --chart-2: 173 58% 39%;
-  --chart-3: 197 37% 24%;
-  --chart-4: 43 74% 66%;
-  --chart-5: 27 87% 67%;
-  --color-sidebar-background: #fafafa;
-  --color-sidebar-foreground: #3f3f46;
-  --color-sidebar-primary: #18181b;
-  --color-sidebar-primary-foreground: #fafafa;
-  --color-sidebar-accent: #f4f4f5;
-  --color-sidebar-accent-foreground: #18181b;
-  --color-sidebar-border: #e5e7eb;
-  --color-sidebar-ring: #3b82f6;
-  --radius: 0.5rem;
-  --radius-lg: var(--radius);
-  --radius-md: calc(var(--radius) - 2px);
-  --radius-sm: calc(var(--radius) - 4px);
+## Tech Stack
 
-  /* animations */
-  --animate-slideDown: accordion-down 0.2s ease-out;
-  --animate-slideUp: accordion-up 0.2s ease-out;
+- [Next.js](https://nextjs.org/) – Framework
+- [TypeScript](https://www.typescriptlang.org/) – Language
+- [Tailwind](https://tailwindcss.com/) – CSS
+- [Shadcn/ui](https://ui.shadcn.com/) – Framework
+- [Supabase](https://supabase.com/) – Database
+- [Drizzle](https://orm.drizzle.team/) – ORM
+- [Auth.js](https://authjs.dev/) – Authentication
+- [OpenPanel](https://openpanel.dev/) – Analytics
+- [Vercel](https://vercel.com/) – Deployments
 
-  @keyframes accordion-down {
-    from {
-      height: 0px;
-    }
-    to {
-      height: var(--radix-accordion-content-height);
-    }
-  }
+## Contributing
 
-  @keyframes accordion-up {
-    from {
-      height: var(--radix-accordion-content-height);
-    }
-    to {
-      height: 0px;
-    }
-  }
-}
+We love our contributors! Here's how you can contribute:
 
-/* dark mode */
-@variant dark (&:where(.dark, .dark *));
+- [Open an issue](https://github.com/sajadevo/devresume/issues) if you believe you've encountered a bug.
+- Make a [pull request](https://github.com/sajadevo/devresume/pull) to add new features/make quality-of-life improvements/fix bugs.
 
-.dark {
-  --color-background: #0a0a0a;
-  --color-foreground: #fafafa;
-  --color-card: #0a0a0a;
-  --color-card-foreground: #fafafa;
-  --color-popover: #0a0a0a;
-  --color-popover-foreground: #fafafa;
-  --color-primary: #fafafa;
-  --color-primary-foreground: #171717;
-  --color-secondary: #262626;
-  --color-secondary-foreground: #fafafa;
-  --color-muted: #262626;
-  --color-muted-foreground: #a3a3a3;
-  --color-accent: #262626;
-  --color-accent-foreground: #fafafa;
-  --color-destructive: #7f1d1d;
-  --color-destructive-foreground: #fafafa;
-  --color-border: #262626;
-  --color-input: #262626;
-  --color-ring: #d4d4d4;
-  --chart-1: 220 70% 50%;
-  --chart-2: 160 60% 45%;
-  --chart-3: 30 80% 55%;
-  --chart-4: 280 65% 60%;
-  --chart-5: 340 75% 55%;
-  --color-sidebar-background: #18181b;
-  --color-sidebar-foreground: #f4f4f5;
-  --color-sidebar-primary: #1d4ed8;
-  --color-sidebar-primary-foreground: #fff;
-  --color-sidebar-accent: #27272a;
-  --color-sidebar-accent-foreground: #f4f4f5;
-  --color-sidebar-border: #27272a;
-  --color-sidebar-ring: #3b82f6;
-}
+<a href="https://github.com/sajadevo/devresume/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=sajadevo/devresume" />
+</a>
 
-* {
-  @apply border-border;
-}
-body {
-  @apply bg-background text-foreground;
-}
-```
+## Repo Activity
 
----
+![DevResume repo activity – generated by Axiom](https://repobeats.axiom.co/api/embed/981693ea4b189e181f1eb953a6b0bee2aef2263b.svg "Repobeats analytics image")
 
-3. The `Chart` and `Sidebar` components uses the css variable values without the `var()` function which was working fine on TailwindCSS v3 but for v4 we need to wrap the values with the `var()` function.
+## License
 
-### Chart Component
-
-1. Find all the `bg-[--color-bg]` classnames and replace it with `bg-[var(--color-bg)]`.
-2. Find all the `border-[--color-border]` classnames and replace it with `border-[var(--color-border)]`.
-
-### Sidebar Component
-
-1. Find all the `w-[--sidebar-width]` classnames and replace it with `w-[var(--sidebar-width)]`.
-2. Find all the `w-[--sidebar-width-icon]` classnames and replace it with `w-[var(--sidebar-width-icon)]`.
-3. Find all the `max-w-[--skeleton-width]` classnames and replace it with `max-w-[var(--skeleton-width)]`.
-
----
-
-**Note** - The `tailwind.config.ts` is an empty file, it's just for the purpose of the shadcn/ui cli to work, we don't need it for the TailwindCSS v4 setup.
+Inspired by [Dub.co](https://dub.co/), DevResume is open-source under the GNU Affero General Public License Version 3 (AGPLv3) or any later version. You can [find it here](https://github.com/sajadevo/devresume/blob/main/LICENSE).
