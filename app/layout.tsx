@@ -27,7 +27,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <OpenPanelComponent
-        clientId={process.env.NEXT_PUBLIC_OPENPANEL_CLIENT_ID!}
+        clientId={process.env.OPENPANEL_CLIENT_ID!}
         trackScreenViews={true}
         trackAttributes={true}
         trackOutgoingLinks={true}
