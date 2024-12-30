@@ -24,7 +24,7 @@ export async function AppSidenav() {
     : null;
 
   return (
-    <div className="p-6 h-max lg:h-screen sticky top-0 flex flex-col justify-between">
+    <div className="p-6 h-max lg:h-screen lg:sticky lg:top-0 flex flex-col justify-between">
       <div className="flex items-center gap-3">
         <Button size="icon" className="size-8 grid place-items-center" asChild>
           <Link href="/">
