@@ -84,6 +84,12 @@ export async function storeProfile(
   const followers = profile.followers;
   const following = profile.following;
 
+  const isAuthorized = await isProfileExists(username!);
+
+  if (isAuthorized) {
+    return;
+  }
+
   const promises = await Promise.all([
     await getUserCommits(username!),
     await getUserPullRequests(username!),
