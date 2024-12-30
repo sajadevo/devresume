@@ -27,14 +27,17 @@ export async function AppSidenav() {
     <div className="p-6 h-max lg:h-screen sticky top-0 flex flex-col justify-between">
       <div className="flex items-center gap-3">
         <Button size="icon" className="size-8 grid place-items-center" asChild>
-          <div>
+          <Link href="/">
             <RiUserSmileFill className="size-5" />
-          </div>
+          </Link>
         </Button>
         <div className="translate-y-px">
-          <p className="text-sm font-semibold text-black leading-none">
+          <Link
+            href="/"
+            className="text-sm block mb-0.5 font-semibold text-black leading-none"
+          >
             DevResume
-          </p>
+          </Link>
           <p className="text-sm text-foreground">
             By{" "}
             <Link
