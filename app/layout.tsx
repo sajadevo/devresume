@@ -1,5 +1,6 @@
 // @components
 import { AppSidenav } from "@/components/app-sidenav";
+import { OpenPanelComponent } from "@openpanel/nextjs";
 
 // @utils
 import { generateMetadata } from "@/lib/utils";
@@ -25,6 +26,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <OpenPanelComponent
+        clientId={process.env.NEXT_PUBLIC_OPENPANEL_CLIENT_ID!}
+        trackScreenViews={true}
+        trackAttributes={true}
+        trackOutgoingLinks={true}
+      />
       <body className={`${geistSans.variable} antialiased`}>
         <div className="grid grid-cols-1 lg:grid-cols-4 lg:overflow-hidden">
           <AppSidenav />
