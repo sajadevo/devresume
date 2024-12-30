@@ -7,7 +7,7 @@ import { CopyLinkButton } from "@/components/copy-link-button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 // @icons
-import { RiUserSmileFill } from "@remixicon/react";
+import { RiGithubFill, RiUserSmileFill } from "@remixicon/react";
 
 // @utils
 import { auth } from "@/auth";
@@ -97,6 +97,13 @@ export async function AppSidenav() {
           className="text-sm text-foreground hover:text-primary transition-colors duration-300"
         >
           Privacy Policy
+        </Link>
+        <Link
+          href="https://github.com/sajadevo/devresume"
+          target="_blank"
+          className="block ml-auto"
+        >
+          <RiGithubFill className="size-5 text-github hover:text-primary transition-colors duration-300" />
         </Link>
       </div>
     </div>
