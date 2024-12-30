@@ -5,7 +5,11 @@ import { AnalyticsChart } from "@/components/analytics-chart";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 // @icons
-import { RiArrowRightUpFill, RiUserUnfollowFill } from "@remixicon/react";
+import {
+  RiArrowRightUpFill,
+  RiImageFill,
+  RiUserUnfollowFill,
+} from "@remixicon/react";
 
 // @actions
 import { getProfile, isProfileExists } from "@/lib/actions";
@@ -221,13 +225,17 @@ export default async function Page({
 
             return (
               <div key={key} className="flex items-center gap-2">
-                <Image
-                  alt={language}
-                  width={20}
-                  height={20}
-                  className="rounded-xs"
-                  src={`https://cdn.jsdelivr.net/npm/simple-icons/icons/${languageName}.svg`}
-                />
+                <Avatar className="size-5 rounded-xs border-none">
+                  <AvatarImage
+                    alt={language}
+                    width={20}
+                    height={20}
+                    src={`https://cdn.jsdelivr.net/npm/simple-icons/icons/${languageName}.svg`}
+                  />
+                  <AvatarFallback className="border border-secondary rounded-xs bg-background">
+                    <RiImageFill className="size-5" />
+                  </AvatarFallback>
+                </Avatar>
                 <span className="text-foreground text-sm mr-2">{language}</span>
               </div>
             );
