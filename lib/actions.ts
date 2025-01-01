@@ -86,10 +86,6 @@ export async function storeProfile(
 
   const isAuthorized = await isProfileExists(username!);
 
-  if (isAuthorized) {
-    return;
-  }
-
   const promises = await Promise.all([
     await getUserCommits(username!),
     await getUserPullRequests(username!),
@@ -116,27 +112,30 @@ export async function storeProfile(
     }))
   );
 
+  const userData = {
+    x,
+    name,
+    bio,
+    avatar,
+    email,
+    username,
+    location,
+    portfolio,
+    createdAt,
+    updatedAt,
+    followers,
+    following,
+    ghOverview,
+    projects,
+    languages: JSON.stringify(promises[5]),
+  };
+
   try {
-    await supabase
-      .from("profiles")
-      .upsert({
-        x,
-        name,
-        bio,
-        avatar,
-        email,
-        username,
-        location,
-        portfolio,
-        createdAt,
-        updatedAt,
-        followers,
-        following,
-        ghOverview,
-        projects,
-        languages: JSON.stringify(promises[5]),
-      })
-      .eq("username", username);
+    if (isAuthorized) {
+      await supabase.from("profiles").update(userData).eq("username", username);
+    } else {
+      await supabase.from("profiles").insert(userData);
+    }
   } catch (error: any) {
     throw new Error(error?.message || "An error occurred!");
   }

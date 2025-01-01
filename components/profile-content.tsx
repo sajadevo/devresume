@@ -87,7 +87,11 @@ export async function ProfileContent({ username }: { username: string }) {
             {profile.portfolio && (
               <Link
                 target="_blank"
-                href={profile.portfolio as string}
+                href={
+                  profile.portfolio.startsWith("https://")
+                    ? profile.portfolio
+                    : `https://${profile.portfolio}`
+                }
                 className="block hover:text-primary transition-colors duration-300"
               >
                 {profile.portfolio}
