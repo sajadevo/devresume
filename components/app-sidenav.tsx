@@ -3,7 +3,9 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { GithubAuth } from "@/components/github-auth";
 import { DeleteButton } from "@/components/delete-button";
+import { XShareButton } from "@/components/x-share-button";
 import { CopyLinkButton } from "@/components/copy-link-button";
+import { LinkedinShareButton } from "@/components/linkedin-share-button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 // @icons
@@ -17,11 +19,11 @@ import { getProfileBasicInfo } from "@/lib/actions";
 
 export async function AppSidenav() {
   const session = await auth();
+
+  const username = session?.user.login;
   const isAuthenticated = Boolean(session?.user);
 
-  const profile = isAuthenticated
-    ? await getProfileBasicInfo(session?.user.login!)
-    : null;
+  const profile = isAuthenticated ? await getProfileBasicInfo(username!) : null;
 
   return (
     <div className="p-6 h-max lg:h-screen lg:sticky lg:top-0 flex flex-col justify-between">
@@ -77,15 +79,17 @@ export async function AppSidenav() {
         <GithubAuth isAuthenticated={isAuthenticated} />
         {isAuthenticated && (
           <>
-            <div className="mt-4">
-              <CopyLinkButton username={session?.user.login!} />
+            <div className="mt-4 flex gap-2 items-center">
+              <XShareButton username={username!} />
+              <LinkedinShareButton username={username!} />
+              <CopyLinkButton username={username!} />
             </div>
             <div className="flex items-center justify-center text-foreground/50 pointer-events-none select-none gap-2 my-4">
               <span>⋅</span>
               <span>⋅</span>
               <span>⋅</span>
             </div>
-            <DeleteButton username={session?.user.login!} />
+            <DeleteButton username={username!} />
           </>
         )}
       </div>
