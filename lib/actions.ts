@@ -17,6 +17,33 @@ import type { InferInsertModel } from "drizzle-orm";
 const endpoint = "https://api.github.com";
 const githubAccessToken = process.env.GITHUB_ACCESS_TOKEN;
 
+export async function syncUserProject(username: string) {
+  const supabase = await createClient();
+  const repositories = await getUserPinnedRepos(username);
+
+  if (repositories.length < 1) {
+    return { error: "We can't find any repository!" };
+  }
+
+  const projects = JSON.stringify(
+    repositories.map((project) => ({
+      name: project.name,
+      url: project.url,
+      stars: project.stargazerCount,
+      languages: project.languages,
+    }))
+  );
+
+  const { error } = await supabase
+    .from("profiles")
+    .update({ projects })
+    .eq("username", username);
+
+  if (error) {
+    throw new Error(error.message);
+  }
+}
+
 export async function deleteProfile(username: string) {
   const supabase = await createClient();
 
@@ -86,10 +113,6 @@ export async function storeProfile(
 
   const isAuthorized = await isProfileExists(username!);
 
-  if (isAuthorized) {
-    return;
-  }
-
   const promises = await Promise.all([
     await getUserCommits(username!),
     await getUserPullRequests(username!),
@@ -116,27 +139,30 @@ export async function storeProfile(
     }))
   );
 
+  const userData = {
+    x,
+    name,
+    bio,
+    avatar,
+    email,
+    username,
+    location,
+    portfolio,
+    createdAt,
+    updatedAt,
+    followers,
+    following,
+    ghOverview,
+    projects,
+    languages: JSON.stringify(promises[5]),
+  };
+
   try {
-    await supabase
-      .from("profiles")
-      .upsert({
-        x,
-        name,
-        bio,
-        avatar,
-        email,
-        username,
-        location,
-        portfolio,
-        createdAt,
-        updatedAt,
-        followers,
-        following,
-        ghOverview,
-        projects,
-        languages: JSON.stringify(promises[5]),
-      })
-      .eq("username", username);
+    if (isAuthorized) {
+      await supabase.from("profiles").update(userData).eq("username", username);
+    } else {
+      await supabase.from("profiles").insert(userData);
+    }
   } catch (error: any) {
     throw new Error(error?.message || "An error occurred!");
   }
