@@ -7,6 +7,27 @@ import { RiUserUnfollowFill } from "@remixicon/react";
 // @actions
 import { isProfileExists } from "@/lib/actions";
 
+// @types
+import type { Metadata, ResolvingMetadata } from "next";
+
+interface Props {
+  params: Promise<{ username: string }>;
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
+}
+
+export async function generateMetadata(
+  { params, searchParams }: Props,
+  parent: ResolvingMetadata
+): Promise<Metadata> {
+  const username = (await params).username;
+
+  return {
+    openGraph: {
+      url: `${process.env.NEXT_PUBLIC_PROD_URL}/${username}`,
+    },
+  };
+}
+
 export default async function Page({
   params,
 }: {

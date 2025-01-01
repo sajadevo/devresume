@@ -12,7 +12,9 @@ export function createLinkedinLink(username: string) {
   const link = `${process.env.NEXT_PUBLIC_PROD_URL}/${username}`;
 
   const params = new URLSearchParams({
+    mini: "true",
     url: link,
+    summary: "Check my resume on DevResume 🤩",
   });
 
   return baseUrl + params.toString();
