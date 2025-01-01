@@ -4,7 +4,11 @@ import { AnalyticsChart } from "@/components/analytics-chart";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 // @icons
-import { RiArrowRightUpFill, RiImageFill } from "@remixicon/react";
+import {
+  RiArrowRightUpFill,
+  RiFolderReduceFill,
+  RiImageFill,
+} from "@remixicon/react";
 
 // @actions
 import { getProfile } from "@/lib/actions";
@@ -136,50 +140,62 @@ export async function ProfileContent({ username }: { username: string }) {
           My Top Projects
         </h3>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {projects?.map(
-            (
-              {
-                url,
-                name,
-                stars,
-                languages,
-              }: {
-                url: string;
-                name: string;
-                stars: number;
-                languages: string[];
-              },
-              key: number
-            ) => (
-              <div
-                key={key}
-                className="border border-border rounded-2xl py-5 px-6 capitalize"
-              >
-                <Link
-                  href={url}
-                  target="_blank"
-                  className="text-lg flex items-center gap-2 font-semibold text-black hover:text-primary transition-colors duration-300 mb-2"
+          {projects.length > 0 ? (
+            projects.map(
+              (
+                {
+                  url,
+                  name,
+                  stars,
+                  languages,
+                }: {
+                  url: string;
+                  name: string;
+                  stars: number;
+                  languages: string[];
+                },
+                key: number
+              ) => (
+                <div
+                  key={key}
+                  className="border border-border rounded-2xl py-5 px-6 capitalize"
                 >
-                  <span className="block truncate">
-                    {name.replaceAll("-", " ").replaceAll("_", " ")}
-                  </span>
-                  <RiArrowRightUpFill className="size-6" />
-                </Link>
-                <div className="flex flex-wrap items-center gap-2">
-                  <span className="text-foreground text-sm">
-                    {new Intl.NumberFormat("en-US").format(stars)} Stars
-                  </span>
-                  {languages.length > 0 && (
-                    <>
-                      <span>⋅</span>
-                      <span className="text-foreground text-sm">
-                        {languages.join(", ")}
-                      </span>
-                    </>
-                  )}
+                  <Link
+                    href={url}
+                    target="_blank"
+                    className="text-lg flex items-center gap-2 font-semibold text-black hover:text-primary transition-colors duration-300 mb-2"
+                  >
+                    <span className="block truncate">
+                      {name.replaceAll("-", " ").replaceAll("_", " ")}
+                    </span>
+                    <RiArrowRightUpFill className="size-6" />
+                  </Link>
+                  <div className="flex flex-wrap items-center gap-2">
+                    <span className="text-foreground text-sm">
+                      {new Intl.NumberFormat("en-US").format(stars)} Stars
+                    </span>
+                    {languages.length > 0 && (
+                      <>
+                        <span>⋅</span>
+                        <span className="text-foreground text-sm">
+                          {languages.join(", ")}
+                        </span>
+                      </>
+                    )}
+                  </div>
                 </div>
-              </div>
+              )
             )
+          ) : (
+            <div className="border border-border p-6 grid place-items-center rounded-2xl col-span-full">
+              <div className="opacity-50">
+                <RiFolderReduceFill className="size-12 text-black mx-auto" />
+                <p className="text-foreground text-base max-w-lg mx-auto text-center mt-4 text-balance">
+                  You don&apos;t have any projects yet. To add your projects,
+                  please pin your top repositories on your GitHub profile.
+                </p>
+              </div>
+            </div>
           )}
         </div>
       </div>
