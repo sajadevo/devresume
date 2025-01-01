@@ -1,13 +1,14 @@
 // @components
 import Link from "next/link";
 import { AnalyticsChart } from "@/components/analytics-chart";
+import { SyncProjectsButton } from "@/components/sync-projects-button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 // @icons
 import {
+  RiImageFill,
   RiArrowRightUpFill,
   RiFolderReduceFill,
-  RiImageFill,
 } from "@remixicon/react";
 
 // @actions
@@ -19,7 +20,13 @@ import { profile as profileSchema } from "@/lib/schema";
 // @types
 import type { InferSelectModel } from "drizzle-orm";
 
-export async function ProfileContent({ username }: { username: string }) {
+export async function ProfileContent({
+  username,
+  isAuthenticated,
+}: {
+  username: string;
+  isAuthenticated?: boolean;
+}) {
   const profile: InferSelectModel<typeof profileSchema> = await getProfile(
     username
   );
@@ -188,12 +195,14 @@ export async function ProfileContent({ username }: { username: string }) {
             )
           ) : (
             <div className="border border-border p-6 grid place-items-center rounded-2xl col-span-full">
-              <div className="opacity-50">
-                <RiFolderReduceFill className="size-12 text-black mx-auto" />
-                <p className="text-foreground text-base max-w-lg mx-auto text-center mt-4 text-balance">
-                  You don&apos;t have any projects yet. To add your projects,
-                  please pin your top repositories on your GitHub profile.
+              <div className="text-center">
+                <RiFolderReduceFill className="size-12 text-black/50 mx-auto" />
+                <p className="text-foreground/50 text-base max-w-lg mx-auto text-center mt-4 text-balance">
+                  {isAuthenticated
+                    ? "You don't have any projects yet. To add your projects, please pin your top repositories on your GitHub profile. If you already have pinned repositories, please click the button below to sync your projects."
+                    : "This user doesn't have any projects yet. Either they haven't pinned any repositories on their GitHub profile or their repositories are private."}
                 </p>
+                {isAuthenticated && <SyncProjectsButton username={username} />}
               </div>
             </div>
           )}
