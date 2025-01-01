@@ -107,7 +107,7 @@ export async function ProfileContent({ username }: { username: string }) {
       </div>
       <div className="my-6">
         <h1 className="text-2xl md:text-3xl font-semibold text-black mb-2">
-          {profile.name}
+          {profile.name || profile.username}
         </h1>
         <p className="text-foreground text-base md:text-lg max-w-xl text-balance">
           {profile.bio}
