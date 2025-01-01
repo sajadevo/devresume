@@ -46,7 +46,7 @@ export function AnalyticsChart({
 }) {
   return (
     <Card>
-      <CardHeader className="p-5 sm:p-6">
+      <CardHeader className="px-5 pt-5 pb-4 sm:px-6 sm:pt-6 sm:pb-5">
         <CardTitle>My Github Activity</CardTitle>
         <CardDescription>{dateRange}</CardDescription>
       </CardHeader>
