@@ -1,6 +1,7 @@
 "use server";
 
 // @utils
+import { cache } from "react";
 import { fetchGraphQL } from "@/lib/graphql-client";
 import { createClient } from "@/lib/supabase/server";
 import { signIn, signOut as signOutFn } from "@/auth";
@@ -59,7 +60,7 @@ export async function deleteProfile(username: string) {
   await signOut();
 }
 
-export async function getProfileBasicInfo(username: string) {
+export const getProfileBasicInfo = cache(async (username: string) => {
   const supabase = await createClient();
 
   const { data, error } = await supabase
@@ -73,9 +74,9 @@ export async function getProfileBasicInfo(username: string) {
   }
 
   return data;
-}
+});
 
-export async function getProfile(username: string) {
+export const getProfile = cache(async (username: string) => {
   const supabase = await createClient();
 
   const { data, error } = await supabase
@@ -89,7 +90,7 @@ export async function getProfile(username: string) {
   }
 
   return data;
-}
+});
 
 export async function storeProfile(
   profile: InferInsertModel<typeof profileSchema> & {
@@ -183,7 +184,7 @@ export async function isProfileExists(username: string) {
   return data.length > 0 ? true : false;
 }
 
-export async function getUserCommits(username: string) {
+export const getUserCommits = cache(async (username: string) => {
   const request = await fetch(
     `${endpoint}/search/commits?q=author:${username}`,
     {
@@ -197,9 +198,9 @@ export async function getUserCommits(username: string) {
   const data = await request.json();
 
   return data.total_count || 0;
-}
+});
 
-export async function getUserPullRequests(username: string) {
+export const getUserPullRequests = cache(async (username: string) => {
   const request = await fetch(
     `${endpoint}/search/issues?q=type:pr+author:${username}`,
     {
@@ -213,9 +214,9 @@ export async function getUserPullRequests(username: string) {
   const response = await request.json();
 
   return response.total_count || 0;
-}
+});
 
-export async function getUserIssues(username: string) {
+export const getUserIssues = cache(async (username: string) => {
   const request = await fetch(
     `${endpoint}/search/issues?q=author:${username}+is:issue`,
     {
@@ -229,9 +230,9 @@ export async function getUserIssues(username: string) {
   const response = await request.json();
 
   return response.total_count || 0;
-}
+});
 
-export async function getUserCodeReview(username: string) {
+export const getUserCodeReview = cache(async (username: string) => {
   const request = await fetch(
     `${endpoint}/search/issues?q=is:pr+reviewed-by:${username}`,
     {
@@ -245,9 +246,9 @@ export async function getUserCodeReview(username: string) {
   const response = await request.json();
 
   return response.total_count || 0;
-}
+});
 
-export async function getUserLanguages(username: string) {
+export const getUserLanguages = cache(async (username: string) => {
   const response = (await fetchGraphQL(getUserLanguagesQuery, {
     username,
   })) as UserLanguages;
@@ -257,9 +258,9 @@ export async function getUserLanguages(username: string) {
   );
 
   return Array.from(new Set(data.flat()));
-}
+});
 
-export async function getUserPinnedRepos(username: string) {
+export const getUserPinnedRepos = cache(async (username: string) => {
   const response = (await fetchGraphQL(getUserPinnedReposQuery, {
     username,
   })) as UserPinnedRepo;
@@ -272,7 +273,7 @@ export async function getUserPinnedRepos(username: string) {
   }));
 
   return data;
-}
+});
 
 export async function signOut() {
   await signOutFn({ redirectTo: "/" });
