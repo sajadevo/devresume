@@ -5,6 +5,7 @@ import { GithubAuth } from "@/components/github-auth";
 import { DeleteButton } from "@/components/delete-button";
 import { XShareButton } from "@/components/x-share-button";
 import { CopyLinkButton } from "@/components/copy-link-button";
+import { SyncProfileButton } from "@/components/sync-profile-button";
 import { LinkedinShareButton } from "@/components/linkedin-share-button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
@@ -79,6 +80,7 @@ export async function AppSidenav() {
         <GithubAuth isAuthenticated={isAuthenticated} />
         {isAuthenticated && (
           <>
+            <SyncProfileButton username={username!} />
             <div className="mt-4 flex gap-2 items-center">
               <XShareButton username={username!} />
               <LinkedinShareButton username={username!} />

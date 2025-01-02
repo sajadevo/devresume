@@ -18,16 +18,37 @@ import type { InferInsertModel } from "drizzle-orm";
 const endpoint = "https://api.github.com";
 const githubAccessToken = process.env.GITHUB_ACCESS_TOKEN;
 
-export async function syncUserProject(username: string) {
+export async function syncUserProfile(username: string) {
   const supabase = await createClient();
-  const repositories = await getUserPinnedRepos(username);
 
-  if (repositories.length < 1) {
-    return { error: "We can't find any repository!" };
-  }
+  const profileResponse = await fetch(`${endpoint}/user`, {
+    headers: {
+      Accept: "application/vnd.github.cloak-preview",
+      Authorization: `Bearer ${githubAccessToken}`,
+    },
+  });
+
+  const profile = await profileResponse.json();
+
+  const promises = await Promise.all([
+    await getUserCommits(username!),
+    await getUserPullRequests(username!),
+    await getUserIssues(username!),
+    await getUserCodeReview(username!),
+    await getUserPinnedRepos(username!),
+    await getUserLanguages(username!),
+  ]);
+
+  const ghOverview = JSON.stringify({
+    commits: promises[0],
+    pullRequests: promises[1],
+    issues: promises[2],
+    codeReviews: promises[3],
+    repositories: profile.public_repos,
+  });
 
   const projects = JSON.stringify(
-    repositories.map((project) => ({
+    promises[4].map((project) => ({
       name: project.name,
       url: project.url,
       stars: project.stargazerCount,
@@ -35,13 +56,28 @@ export async function syncUserProject(username: string) {
     }))
   );
 
-  const { error } = await supabase
-    .from("profiles")
-    .update({ projects })
-    .eq("username", username);
+  const userData = {
+    username,
+    projects,
+    ghOverview,
+    bio: profile.bio,
+    name: profile.name,
+    email: profile.email,
+    portfolio: profile.blog,
+    avatar: profile.avatar_url,
+    location: profile.location,
+    x: profile.twitter_username,
+    followers: profile.followers,
+    following: profile.following,
+    createdAt: profile.created_at,
+    updatedAt: profile.updated_at,
+    languages: JSON.stringify(promises[5]),
+  };
 
-  if (error) {
-    throw new Error(error.message);
+  try {
+    await supabase.from("profiles").update(userData).eq("username", username);
+  } catch (error: any) {
+    throw new Error(error?.message || "An error occurred!");
   }
 }
 
@@ -99,18 +135,7 @@ export async function storeProfile(
 ) {
   const supabase = await createClient();
 
-  const x = profile.x;
-  const name = profile.name;
-  const bio = profile.bio;
-  const email = profile.email;
-  const avatar = profile.avatar;
   const username = profile.username;
-  const location = profile.location;
-  const portfolio = profile.portfolio;
-  const createdAt = profile.createdAt;
-  const updatedAt = profile.updatedAt;
-  const followers = profile.followers;
-  const following = profile.following;
 
   const isAuthorized = await isProfileExists(username!);
 
@@ -141,20 +166,20 @@ export async function storeProfile(
   );
 
   const userData = {
-    x,
-    name,
-    bio,
-    avatar,
-    email,
     username,
-    location,
-    portfolio,
-    createdAt,
-    updatedAt,
-    followers,
-    following,
-    ghOverview,
     projects,
+    ghOverview,
+    x: profile.x,
+    name: profile.name,
+    bio: profile.bio,
+    email: profile.email,
+    avatar: profile.avatar,
+    location: profile.location,
+    portfolio: profile.portfolio,
+    createdAt: profile.createdAt,
+    updatedAt: profile.updatedAt,
+    followers: profile.followers,
+    following: profile.following,
     languages: JSON.stringify(promises[5]),
   };
 
