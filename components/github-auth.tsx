@@ -27,7 +27,7 @@ export function GithubAuth({ isAuthenticated }: { isAuthenticated: boolean }) {
       onClick={handleAuth}
       className="w-full cursor-pointer"
     >
-      <RiLogoutCircleFill className="size-5" /> Disconnect your Github
+      <RiLogoutCircleFill className="size-4" /> Disconnect your GitHub
     </Button>
   ) : (
     <Button
@@ -36,7 +36,7 @@ export function GithubAuth({ isAuthenticated }: { isAuthenticated: boolean }) {
       onClick={handleAuth}
       className="w-full cursor-pointer"
     >
-      <RiGithubFill className="size-5" /> Connect your Github
+      <RiGithubFill className="size-4" /> Connect your GitHub
     </Button>
   );
 }

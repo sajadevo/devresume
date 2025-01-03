@@ -30,9 +30,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
           followers: githubProfile.followers,
           createdAt: githubProfile.created_at,
           updatedAt: githubProfile.updated_at,
-          repositories:
-            githubProfile.public_repos +
-            (githubProfile.total_private_repos || 0),
+          repositories: githubProfile.public_repos,
         });
       }
 

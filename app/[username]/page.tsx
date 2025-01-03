@@ -5,27 +5,58 @@ import { ProfileContent } from "@/components/profile-content";
 import { RiUserUnfollowFill } from "@remixicon/react";
 
 // @actions
-import { isProfileExists } from "@/lib/actions";
+import { isProfileExists, getProfile } from "@/lib/actions";
+
+// @schemas
+import { profile as profileSchema } from "@/lib/schema";
+
+// @utils
+import { generateMetadata as generateMetadataFn } from "@/lib/utils";
 
 // @types
-import type { Metadata, ResolvingMetadata } from "next";
+import type { Metadata } from "next";
+import type { InferSelectModel } from "drizzle-orm";
 
 interface Props {
   params: Promise<{ username: string }>;
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 }
 
-export async function generateMetadata(
-  { params, searchParams }: Props,
-  parent: ResolvingMetadata
-): Promise<Metadata> {
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const username = (await params).username;
+  const profile: InferSelectModel<typeof profileSchema> = await getProfile(
+    username
+  );
 
-  return {
-    openGraph: {
-      url: `${process.env.NEXT_PUBLIC_PROD_URL}/${username}`,
+  const title = `${profile.name} | DevResume`;
+  const description = profile.bio;
+  const domain = new URL(
+    process.env.NODE_ENV === "production"
+      ? `${process.env.NEXT_PUBLIC_PROD_URL}/${username}`
+      : `${process.env.NEXT_PUBLIC_DEV_URL}/${username}`
+  );
+  const productDemoImg = "/demo.png";
+
+  return generateMetadataFn({
+    title,
+    description,
+    alternates: {
+      canonical: domain,
     },
-  };
+    openGraph: {
+      type: "profile",
+      url: domain,
+      images: [
+        {
+          url: profile.avatar || productDemoImg,
+        },
+      ],
+    },
+    twitter: {
+      card: "summary",
+      images: profile.avatar || productDemoImg,
+    },
+  });
 }
 
 export default async function Page({

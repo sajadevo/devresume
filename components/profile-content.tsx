@@ -1,7 +1,6 @@
 // @components
 import Link from "next/link";
 import { AnalyticsChart } from "@/components/analytics-chart";
-import { SyncProjectsButton } from "@/components/sync-projects-button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 // @icons
@@ -199,10 +198,9 @@ export async function ProfileContent({
                 <RiFolderReduceFill className="size-12 text-black/50 mx-auto" />
                 <p className="text-foreground/50 text-base max-w-lg mx-auto text-center mt-4 text-balance">
                   {isAuthenticated
-                    ? "You don't have any projects yet. To add your projects, please pin your top repositories on your GitHub profile. If you already have pinned repositories, please click the button below to sync your projects."
-                    : "This user doesn't have any projects yet. Either they haven't pinned any repositories on their GitHub profile or their repositories are private."}
+                    ? `You don't have any projects yet. To add your projects, please pin your top repositories on your GitHub profile. If you already have pinned repositories, please click the "Sync with GitHub" button on the sidebar.`
+                    : "This user doesn't have any projects yet. Either user haven't pinned any repositories on their GitHub profile or their repositories are private."}
                 </p>
-                {isAuthenticated && <SyncProjectsButton username={username} />}
               </div>
             </div>
           )}
