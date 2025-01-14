@@ -2,6 +2,7 @@
 import Link from "next/link";
 import { AnalyticsChart } from "@/components/analytics-chart";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { ProfileImprovementDialog } from "@/components/profile-improvement-dialog";
 
 // @icons
 import {
@@ -13,11 +14,8 @@ import {
 // @actions
 import { getProfile } from "@/lib/actions";
 
-// @schemas
-import { profile as profileSchema } from "@/lib/schema";
-
 // @types
-import type { InferSelectModel } from "drizzle-orm";
+import { Profile } from "@/types";
 
 export async function ProfileContent({
   username,
@@ -26,9 +24,7 @@ export async function ProfileContent({
   username: string;
   isAuthenticated?: boolean;
 }) {
-  const profile: InferSelectModel<typeof profileSchema> = await getProfile(
-    username
-  );
+  const profile: Profile = await getProfile(username);
 
   const createdAt = new Date(profile.createdAt as string);
   const updatedAt = new Date(profile.updatedAt as string);
@@ -68,6 +64,11 @@ export async function ProfileContent({
       name: "repo",
       fill: "var(--color-repo)",
       value: Number(ghOverview.repositories),
+    },
+    {
+      name: "star",
+      fill: "var(--color-star)",
+      value: Number(ghOverview.stars),
     },
   ].filter((item) => item.value !== 0);
 
@@ -120,9 +121,12 @@ export async function ProfileContent({
         </div>
       </div>
       <div className="my-6">
-        <h1 className="text-2xl md:text-3xl font-semibold text-black mb-2">
-          {profile.name || profile.username}
-        </h1>
+        <div className="flex items-center gap-2 mb-2">
+          <h1 className="text-2xl md:text-3xl font-semibold text-black">
+            {profile.name || profile.username}
+          </h1>
+          <ProfileImprovementDialog profile={profile} />
+        </div>
         <p className="text-foreground text-base md:text-lg max-w-xl text-balance">
           {profile.bio}
         </p>

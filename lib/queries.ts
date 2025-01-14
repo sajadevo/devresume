@@ -1,3 +1,21 @@
+export const getUserTotalStarsQuery = `
+  query($username: String!) {
+    user(login: $username) {
+      repositories(first: 100, ownerAffiliations: OWNER) {
+        edges {
+          node {
+            stargazerCount
+          }
+        }
+        pageInfo {
+          endCursor
+          hasNextPage
+        }
+      }
+    }
+  }
+`;
+
 export const getUserLanguagesQuery = `
   query GetUserLanguages($username: String!) {
     user(login: $username) {

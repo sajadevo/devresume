@@ -35,6 +35,10 @@ const chartConfig = {
     label: "Repositories",
     color: "hsl(var(--chart-5))",
   },
+  star: {
+    label: "Stars",
+    color: "hsl(var(--chart-6))",
+  },
 } satisfies ChartConfig;
 
 export function AnalyticsChart({
@@ -51,7 +55,7 @@ export function AnalyticsChart({
         <CardDescription>{dateRange}</CardDescription>
       </CardHeader>
       <CardContent className="px-4 sm:px-6 pb-3 sm:pb-5">
-        <ChartContainer config={chartConfig} className="h-70 w-full">
+        <ChartContainer config={chartConfig} className="h-80 w-full">
           <BarChart accessibilityLayer data={data} layout="vertical">
             <YAxis
               dataKey="name"

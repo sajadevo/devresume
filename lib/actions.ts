@@ -7,7 +7,11 @@ import { createClient } from "@/lib/supabase/server";
 import { signIn, signOut as signOutFn } from "@/auth";
 
 // @queries
-import { getUserLanguagesQuery, getUserPinnedReposQuery } from "@/lib/queries";
+import {
+  getUserLanguagesQuery,
+  getUserPinnedReposQuery,
+  getUserTotalStarsQuery,
+} from "@/lib/queries";
 
 // @schemas
 import { profile as profileSchema } from "@/lib/schema";
@@ -17,6 +21,19 @@ import type { InferInsertModel } from "drizzle-orm";
 
 const endpoint = "https://api.github.com";
 const githubAccessToken = process.env.GITHUB_ACCESS_TOKEN;
+
+export const getUserTotalStars = cache(async (username: string) => {
+  const response = (await fetchGraphQL(getUserTotalStarsQuery, {
+    username,
+  })) as UserStars;
+
+  const stars = response.user.repositories.edges.reduce(
+    (acc, repo) => acc + repo.node.stargazerCount,
+    0
+  );
+
+  return stars || 0;
+});
 
 export async function syncUserProfile(username: string) {
   const supabase = await createClient();
@@ -37,6 +54,7 @@ export async function syncUserProfile(username: string) {
     await getUserCodeReview(username!),
     await getUserPinnedRepos(username!),
     await getUserLanguages(username!),
+    await getUserTotalStars(username!),
   ]);
 
   const ghOverview = JSON.stringify({
@@ -45,6 +63,7 @@ export async function syncUserProfile(username: string) {
     issues: promises[2],
     codeReviews: promises[3],
     repositories: profile.public_repos,
+    stars: promises[6],
   });
 
   const projects = JSON.stringify(
@@ -146,6 +165,7 @@ export async function storeProfile(
     await getUserCodeReview(username!),
     await getUserPinnedRepos(username!),
     await getUserLanguages(username!),
+    await getUserTotalStars(username!),
   ]);
 
   const ghOverview = JSON.stringify({
@@ -154,6 +174,7 @@ export async function storeProfile(
     issues: promises[2],
     codeReviews: promises[3],
     repositories: profile.repositories,
+    stars: promises[6],
   });
 
   const projects = JSON.stringify(
