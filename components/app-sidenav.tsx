@@ -96,7 +96,7 @@ export async function AppSidenav() {
         )}
       </div>
       <div className="flex items-center gap-2">
-        <p className="text-sm text-foreground">&copy; 2024</p>
+        <p className="text-sm text-foreground">&copy; {new Date().getFullYear()}</p>
         <span className="text-foreground leading-none">⋅</span>
         <Link
           href="/privacy-policy"

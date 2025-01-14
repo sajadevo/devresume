@@ -47,4 +47,4 @@ bun.lockb
 pnpm-lock.yaml
 package-lock.json
 
-/drizzle
+.history/
