@@ -18,14 +18,7 @@ import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 
 // @icons
-import {
-  RiLoader2Fill,
-  RiAlarmWarningFill,
-  RiCheckboxCircleFill,
-} from "@remixicon/react";
-
-// @utils
-import { cn } from "@/lib/utils";
+import { RiLoader2Fill, RiCheckboxCircleFill } from "@remixicon/react";
 
 // @actions
 import { deleteProfile } from "@/lib/actions";

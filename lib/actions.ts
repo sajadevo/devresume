@@ -18,6 +18,7 @@ import { profile as profileSchema } from "@/lib/schema";
 
 // @types
 import type { InferInsertModel } from "drizzle-orm";
+import { revalidatePath } from "next/cache";
 
 const endpoint = "https://api.github.com";
 const githubAccessToken = process.env.GITHUB_ACCESS_TOKEN;
@@ -95,6 +96,9 @@ export async function syncUserProfile(username: string) {
 
   try {
     await supabase.from("profiles").update(userData).eq("username", username);
+
+    revalidatePath("/", "page");
+    revalidatePath(`/${username}`, "page");
   } catch (error: any) {
     throw new Error(error?.message || "An error occurred!");
   }
