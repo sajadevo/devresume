@@ -1,3 +1,15 @@
+interface UserStars {
+  user: {
+    repositories: {
+      edges: {
+        node: {
+          stargazerCount: number;
+        };
+      }[];
+    };
+  };
+}
+
 interface UserLanguages {
   user: {
     repositories: {

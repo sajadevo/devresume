@@ -12,14 +12,10 @@ import {
   RiCheckboxCircleFill,
 } from "@remixicon/react";
 
-// @hooks
-import { useRouter } from "next/navigation";
-
 // @actions
 import { syncUserProfile } from "@/lib/actions";
 
 export function SyncProfileButton({ username }: { username: string }) {
-  const { refresh } = useRouter();
   const [isSynced, setIsSynced] = React.useState(false);
   const [isLoading, setIsLoading] = React.useState(false);
 
@@ -33,7 +29,6 @@ export function SyncProfileButton({ username }: { username: string }) {
     setIsLoading(false);
 
     setTimeout(() => {
-      refresh();
       setIsSynced(false);
     }, 1000);
   }
