@@ -7,7 +7,7 @@ export default function PrivacyPolicy() {
       <h2 className="text-3xl font-semibold tracking-tight text-black mb-2">
         Privacy Policy
       </h2>
-      <p className="leading-7">Last updated on January 1, 2025</p>
+      <p className="leading-7">Last updated on February 10, 2025</p>
       <div className="mt-12 max-w-2xl text-foreground">
         <p className="leading-7">
           Welcome to DevResume. Your privacy is important to us, and this
@@ -96,12 +96,12 @@ export default function PrivacyPolicy() {
           </li>
         </ul>
         <p className="leading-7 my-4">
-          To exercise these rights, contact us at{" "}
+          To exercise these rights, contact{" "}
           <Link
-            href="mailto:help@devresume.xyz"
+            href="mailto:sajadevvo@gmail.com"
             className="text-black hover:text-primary font-medium transition-colors duration-300"
           >
-            help@devresume.xyz
+            Sajad
           </Link>
         </p>
 
@@ -127,13 +127,12 @@ export default function PrivacyPolicy() {
           Contact Us
         </h3>
         <p className="leading-7 mb-4">
-          If you have questions or concerns about this Privacy Policy, contact
-          us at{" "}
+          If you have questions or concerns about this Privacy Policy, contact{" "}
           <Link
-            href="mailto:help@devresume.xyz"
+            href="mailto:sajadevvo@gmail.com"
             className="text-black hover:text-primary font-medium transition-colors duration-300"
           >
-            help@devresume.xyz
+            Sajad
           </Link>
         </p>
       </div>

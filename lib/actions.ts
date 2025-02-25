@@ -23,6 +23,21 @@ import { revalidatePath } from "next/cache";
 const endpoint = "https://api.github.com";
 const githubAccessToken = process.env.GITHUB_ACCESS_TOKEN;
 
+export async function getAllUsers() {
+  const supabase = await createClient();
+
+  const { data, error } = await supabase
+    .from("profiles")
+    .select("username,name,avatar,ghOverview")
+    .limit(50);
+
+  if (error) {
+    throw new Error(error.message);
+  }
+
+  return data;
+}
+
 export const getUserTotalStars = cache(async (username: string) => {
   const response = (await fetchGraphQL(getUserTotalStarsQuery, {
     username,
