@@ -19,7 +19,7 @@ const validFilters = {
 };
 
 export const metadata = generateMetadata({
-  title: "Leaderboard",
+  title: "Leaderboard - DevResume",
   description: "Check out the top performers on DevResume.",
 });
 
