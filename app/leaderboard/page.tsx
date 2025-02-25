@@ -7,6 +7,9 @@ import { LeaderboardHeader } from "@/components/leaderboard-header";
 // @actions
 import { getAllUsers } from "@/lib/actions";
 
+// @utils
+import { generateMetadata } from "@/lib/utils";
+
 const validFilters = {
   commits: "commits",
   stars: "stars",
@@ -14,6 +17,11 @@ const validFilters = {
   issues: "issues",
   reviews: "codeReviews",
 };
+
+export const metadata = generateMetadata({
+  title: "Leaderboard",
+  description: "Check out the top performers on DevResume.",
+});
 
 export default async function Rankings({
   searchParams,
