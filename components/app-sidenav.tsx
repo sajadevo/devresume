@@ -92,21 +92,21 @@ export async function AppSidenav() {
               <span>⋅</span>
             </div>
             <DeleteProfileDialog username={username!} />
-            <div className="flex items-center justify-center text-foreground/50 pointer-events-none select-none gap-2 my-4">
-              <span>⋅</span>
-              <span>⋅</span>
-              <span>⋅</span>
-            </div>
-            <div className="flex items-center gap-4 justify-center">
-              <Link
-                href="/leaderboard"
-                className="flex items-center gap-2 text-black hover:text-primary transition-colors duration-300"
-              >
-                <RiTrophyFill className="size-4" /> Leaderboard
-              </Link>
-            </div>
           </>
         )}
+        <div className="flex items-center justify-center text-foreground/50 pointer-events-none select-none gap-2 my-4">
+          <span>⋅</span>
+          <span>⋅</span>
+          <span>⋅</span>
+        </div>
+        <div className="flex items-center gap-4 justify-center">
+          <Link
+            href="/leaderboard"
+            className="flex items-center gap-2 text-black hover:text-primary transition-colors duration-300"
+          >
+            <RiTrophyFill className="size-4" /> Leaderboard
+          </Link>
+        </div>
       </div>
       <div className="flex items-center gap-2">
         <p className="text-sm text-foreground">
