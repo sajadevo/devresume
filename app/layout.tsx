@@ -1,6 +1,7 @@
 // @components
 import { AppSidenav } from "@/components/app-sidenav";
 import { OpenPanelComponent } from "@openpanel/nextjs";
+import { RoutingProgress } from "@/components/routing-progress";
 
 // @utils
 import { generateMetadata } from "@/lib/utils";
@@ -33,14 +34,16 @@ export default function RootLayout({
         trackOutgoingLinks={true}
       />
       <body className={`${geistSans.variable} antialiased`}>
-        <div className="grid grid-cols-1 lg:grid-cols-4 lg:overflow-hidden">
-          <AppSidenav />
-          <div className="col-span-full lg:col-span-3 p-2">
-            <div className="w-full h-full lg:h-[calc(100vh-16px)] lg:overflow-scroll bg-white border border-border rounded-3xl px-6 py-6 md:px-10 md:py-8">
-              {children}
+        <RoutingProgress>
+          <div className="grid grid-cols-1 lg:grid-cols-4 lg:overflow-hidden">
+            <AppSidenav />
+            <div className="col-span-full lg:col-span-3 p-2">
+              <div className="w-full h-full lg:h-[calc(100vh-16px)] lg:overflow-scroll bg-white border border-border rounded-3xl px-6 py-6 md:px-10 md:py-8">
+                {children}
+              </div>
             </div>
           </div>
-        </div>
+        </RoutingProgress>
       </body>
     </html>
   );
