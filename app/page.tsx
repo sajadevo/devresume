@@ -16,8 +16,7 @@ export default async function Page() {
         <div className="opacity-50">
           <RiArticleFill className="size-24 text-black mx-auto" />
           <p className="text-foreground text-base md:text-lg max-w-md mx-auto text-center mt-8 text-balance">
-            You need to sign in with your GitHub & LinkedIn accounts to see your
-            DevResume.
+            You need to sign in with your GitHub account to see your DevResume.
           </p>
         </div>
       </div>
