@@ -129,7 +129,7 @@ export default function PrivacyPolicy() {
         <p className="leading-7 mb-4">
           If you have questions or concerns about this Privacy Policy, contact{" "}
           <Link
-            href="mailto:sajadevvo@gmail.com"
+            href="mailto:hi@sajadevo.com"
             className="text-black hover:text-primary font-medium transition-colors duration-300"
           >
             Sajad
