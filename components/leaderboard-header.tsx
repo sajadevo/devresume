@@ -23,16 +23,16 @@ export function LeaderboardHeader({ sort }: { sort: string }) {
   return (
     <div
       data-pending={isPending ? true : undefined}
-      className="px-6 py-5 border border-border rounded-2xl mb-4 flex items-center justify-between"
+      className="px-6 py-5 border border-border rounded-2xl mb-4 flex items-center justify-between gap-8 flex-wrap"
     >
       <h1 className="font-semibold text-black text-lg leading-none">
         Leaderboard
       </h1>
-      <div className="flex items-center gap-4">
+      <div className="flex sm:flex-row flex-col sm:items-center gap-4">
         <div className="font-semibold text-black leading-none text-sm">
           Sorted by:
         </div>
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 flex-wrap sm:flex-nowrap">
           <LeaderboardBadge
             type="commit"
             emoji="📝"
